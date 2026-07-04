@@ -37,9 +37,13 @@ public class CricketBoardService implements CricketBoardInterface{
 
     @Override
     public CricketBoard getCricketBoard(Long id) {
-        return cricketBoardRepository.findById(id).orElseThrow(
+        CricketBoard cricketBoard = cricketBoardRepository.findById(id).orElseThrow(
                 () -> new RecordNotFoundException("No records found with this id: " + id)
         );
+        if(cricketBoard.getStatus().equals(Status.INACTIVE)){
+            throw new RecordNotFoundException("No records found with this id: " + id);
+        }
+        return cricketBoard;
     }
 
     @Override
@@ -51,6 +55,9 @@ public class CricketBoardService implements CricketBoardInterface{
     public CricketBoard updateCricketBoard(Long id, CricketBoard cricketBoardObject) {
         CricketBoard existingCricketBoard = cricketBoardRepository.findById(id).
                 orElseThrow(() -> new RecordNotFoundException("Record not found with id: " + id));
+        if(existingCricketBoard.getStatus().equals(Status.INACTIVE)){
+            throw new RecordNotFoundException("No active cricket boards");
+        }
         if(cricketBoardObject.getBoardName() != null &&
                 !cricketBoardObject.getBoardName().isBlank()){
             existingCricketBoard.setBoardName(cricketBoardObject.getBoardName());
