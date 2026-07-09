@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,21 +28,39 @@ public class CricketBoardService implements CricketBoardInterface{
 
     @Override
     public CricketBoardCreationDTO createCricketBoard(CricketBoard cricketBoardObject) {
-        if(cricketBoardRepository
-                .existsCricketBoardByBoardCode(cricketBoardObject.getBoardCode())){
-            throw new CreationErrorException("Cricket Board already exists");
+        Optional<CricketBoard> existingCricketBoard = cricketBoardRepository
+                .getCricketBoardsByBoardCode(cricketBoardObject.getBoardCode());
+        CricketBoard result;
+        if(cricketBoardObject.getStatus() != Status.ACTIVE){
+            throw new CreationErrorException("Status of the new team board should be active...");
         }
-        CricketBoard result = cricketBoardRepository.save(cricketBoardObject);
-        return convertResultObjectOfCricketBoard(result);
+        if(existingCricketBoard.isPresent()){
+            CricketBoard cricketBoard = existingCricketBoard.get();
+            if(cricketBoard.getStatus() == Status.ACTIVE){
+                throw new CreationErrorException("Cricket board already exists...");
+            }
+            cricketBoard.setStatus(cricketBoardObject.getStatus());
+            cricketBoard.setBoardName(cricketBoardObject.getBoardName());
+            cricketBoard.setPresident(cricketBoardObject.getPresident());
+            cricketBoard.setHeadQuarters(cricketBoardObject.getHeadQuarters());
+            cricketBoard.setEstablishedYear(cricketBoardObject.getEstablishedYear());
+            result = cricketBoardRepository.save(cricketBoard);
+            return convertResultObjectOfCricketBoard(result);
+        }
+        else{
+            result = cricketBoardRepository.save(cricketBoardObject);
+            return convertResultObjectOfCricketBoard(result);
+        }
+
     }
 
     @Override
     public CricketBoard getCricketBoard(Long id) {
         CricketBoard cricketBoard = cricketBoardRepository.findById(id).orElseThrow(
-                () -> new RecordNotFoundException("No records found with this id: " + id)
+                () -> new RecordNotFoundException("No Cricket Board found with this id: " + id)
         );
         if(cricketBoard.getStatus().equals(Status.INACTIVE)){
-            throw new RecordNotFoundException("No records found with this id: " + id);
+            throw new RecordNotFoundException("No Cricket Board found with this id: " + id);
         }
         return cricketBoard;
     }

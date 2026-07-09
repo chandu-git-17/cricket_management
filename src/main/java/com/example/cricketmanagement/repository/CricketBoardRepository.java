@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CricketBoardRepository extends JpaRepository<CricketBoard, Long> {
     CricketBoard getCricketBoardsById(Long id);
-    Boolean existsCricketBoardByBoardCode(String boardCode);
     List<CricketBoard> findCricketBoardByStatus(Status status);
+
+    Optional<CricketBoard> getCricketBoardsByBoardCode(String boardCode);
 }
