@@ -23,10 +23,9 @@ public class CountryService {
 
     public CountryRepository countryRepository;
     public CricketBoardRepository cricketBoardRepository;
-    public CountryService(CountryRepository countryRepository, CricketBoardRepository cricketBoardRepository, ThreadPoolTaskExecutor threadPoolTaskExecutor){
+    public CountryService(CountryRepository countryRepository, CricketBoardRepository cricketBoardRepository){
         this.countryRepository = countryRepository;
         this.cricketBoardRepository = cricketBoardRepository;
-        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
 
     public Country createCountry(Country country){
