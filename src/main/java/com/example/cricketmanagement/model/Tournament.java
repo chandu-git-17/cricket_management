@@ -17,9 +17,12 @@ public class Tournament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @Column(unique = true)
     private String code;
     private Integer numberOfTeams;
 

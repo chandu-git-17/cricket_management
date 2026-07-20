@@ -3,9 +3,7 @@ package com.example.cricketmanagement.dto;
 import com.example.cricketmanagement.model.MatchFormat;
 import com.example.cricketmanagement.model.Status;
 import com.example.cricketmanagement.model.TournamentType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -13,6 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateTournamentDTO {
 
     private Long id;
