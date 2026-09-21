@@ -1,5 +1,6 @@
 package com.example.cricketmanagement.dto;
 
+import com.example.cricketmanagement.model.MatchStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,16 +12,17 @@ import java.time.LocalDate;
 public class CreateMatchDTO {
 
     private Long id;
-    @NotNull
+    @NotNull(message = "Team 1 is required")
     private Long team1Id;
-    @NotNull
+    @NotNull(message = "Team 2 is required")
     private Long team2Id;
-    @NotNull
+    @NotNull(message = "Tournament is required")
     private Long tournamentId;
-    @NotNull
+    @NotNull(message = "Match date is required")
     private LocalDate matchDate;
-    private String matchStatus;
-    @NotNull
+    @NotNull(message = "Match status is required")
+    private MatchStatus matchStatus;
+    @NotNull(message = "Venue is required")
     private Long venueId;
 
 }
